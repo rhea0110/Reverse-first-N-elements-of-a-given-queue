@@ -1,0 +1,81 @@
+// Reverse first N elements of a given queue star
+Given a queue of integer elements and an integer k, your task is to reverse first k elements of the queue, leaving the other elements in same order.
+
+#include<iostream>
+#include<cstdio>
+#include<cmath>
+using namespace std;
+
+class Queue{
+  int *queue;
+  int front;
+  int rear;
+  int capacity;
+  public:
+  	Queue(int size){
+      this->capacity = size;
+      queue = new int[size];
+      front = 0;
+      rear = 0;
+    }
+  	void enQueue(int data){
+      if(rear == capacity){
+        cout<<"Overflow\n";
+        return;
+      }
+      queue[rear++] = data;
+    }
+ 	int deQueue(){
+    	if(front == rear){
+      		return -1;
+    	}
+    	return queue[front++];
+  	}
+  	bool isEmpty(){
+      return front == rear;
+    }
+  	int size(){
+      return rear-front;
+    }
+};
+
+#include <bits/stdc++.h>
+void reverseKElementsQueue (Queue* Queue, int k){
+ if(k > Queue->size())
+   return;
+  stack<int> Stack;
+  for(int i = 0; i < k; i++)
+  {
+    Stack.push(Queue->deQueue());
+  }
+  while(!Stack.empty())
+  {
+    Queue->enQueue(Stack.top());
+    Stack.pop();
+  }
+  for(int i = 0; i < Queue->size()-k; i++)
+  {
+    Queue->enQueue(Queue->deQueue());
+  }
+}
+
+int main(){
+  int t;
+  cin>>t;
+  while(t--){
+    int n;
+    cin>>n;
+    int k;
+    cin>>k;
+    Queue *queue = new Queue(100);
+    while(n--){
+      int x;
+      cin>>x;
+      queue->enQueue(x);
+    }
+    reverseKElementsQueue(queue,k);
+    while((n = queue->deQueue())!=-1)
+      cout<<n<<' ';
+    cout<<endl;
+  }
+}
